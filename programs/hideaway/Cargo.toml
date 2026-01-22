@@ -1,0 +1,20 @@
+[package]
+name = "hideaway"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "HideAway - Private File Vault on Solana"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[features]
+default = []
+std = []
+
+[dependencies]
+pinocchio = { workspace = true }
+
+[dev-dependencies]
+mollusk-svm = "0.0.12"
+solana-sdk = "2.1"

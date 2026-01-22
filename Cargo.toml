@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "programs/hideaway",
+    "scripts",
+]
+resolver = "2"
+
+[workspace.dependencies]
+pinocchio = { git = "https://github.com/kevinheavey/pinocchio", branch = "main" }
