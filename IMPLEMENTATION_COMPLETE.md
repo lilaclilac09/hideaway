@@ -1,8 +1,10 @@
-# HideAway Implementation Complete ✅
+# HideAway Implementation Inventory (historical)
+
+Audit qualification (2026-11-22): the checklists below record historical implementation/scaffolding claims, not passing verification. Frontend installation is blocked by an unavailable Lit SDK version; file encryption and authorization integrations are incomplete, and the default program ID is a placeholder. Do not treat this document as privacy, deployment or end-to-end acceptance evidence. See [acceptance audit](notes/acceptance-audit-2026-11-22.md).
 
 ## Summary
 
-The HideAway encrypted file vault application has been fully implemented with user flow visualizations, complete frontend, backend, and client SDK.
+The repository contains user-flow visualizations, frontend, program and client scaffolding. Completeness and private-vault behavior have not been established.
 
 ## What Was Built
 
