@@ -1,16 +1,22 @@
 # HideAway - Private File Vault on Solana
 
-🔒 **HideAway** is a decentralized file vault that stores file hashes on-chain for integrity verification, with encrypted files stored off-chain on IPFS. Built for Tokyo's youth navigating family-shared devices, HideAway provides portable privacy with advanced access controls.
+🔒 **HideAway** is a prototype for storing file hash commitments on Solana and file bytes on IPFS. It is not a verified private vault and must not be used for sensitive files.
+
+Status: BLOCKED — frontend dependency installation fails and privacy/access integrations are incomplete; next human action: select a supported Lit SDK/integration and validate deployment and encryption before using any files.
+
+Verification scope (2026-11-22): the TypeScript client builds and local hashing checks can run, but this does not prove wallet uploads, private storage, sharing or on-chain authorization. GitHub homepage is unset, Pages is disabled and deployment records are empty; an unlisted deployment has not been ruled out. See [acceptance audit](notes/acceptance-audit-2026-11-22.md).
+
+**Privacy warning:** the current UI upload path sends file bytes directly to IPFS without file encryption and normally stores the CID as plaintext. Salting a hash does not encrypt the file or make its contents private. The SDK program ID is still a placeholder; Bonsol/Arcium/Lit authorization and Clock integration are incomplete. Do not connect a funded wallet or upload personal data to test this prototype. Existing workflow diagrams and implementation checklists describe intended/scaffolded behavior, not observed end-to-end verification.
 
 ## Features
 
 - **On-Chain Hash Verification**: SHA-256 file hashes stored on Solana for tamper-proof integrity checks
-- **IPFS Storage**: Encrypted files stored off-chain on IPFS for decentralized storage
-- **Zero-Knowledge Proofs**: Optional ZK proofs for access without revealing file contents (Bonsol integration ready)
-- **MPC Sharing**: Multi-party computation for secure file sharing (Arcium integration ready)
-- **Time-Locked Access**: Schedule file access for future dates (e.g., "future self")
-- **Lit Protocol Conditions**: Age-based and conditional access controls
-- **Salted Hashes**: Prevents rainbow table attacks
+- **IPFS Storage**: Raw file upload/download service; file encryption is not implemented
+- **Zero-Knowledge Proofs**: Bonsol verification TODO; not a verified access control
+- **MPC Sharing**: Arcium integration TODO; not functional secure MPC sharing
+- **Time-Locked Access**: Fields/instructions scaffolded; current timestamp is a placeholder
+- **Lit Protocol Conditions**: Partial integration with placeholder authentication
+- **Salted Hashes**: SHA-256 hashing with salt; not file encryption
 - **Wallet-Based Authentication**: Access files via Solana wallet proof
 
 ## Project Structure
@@ -64,7 +70,7 @@ The `FileVault` account (~323 bytes) stores:
 
 ### Off-Chain (IPFS)
 
-Files are encrypted and stored on IPFS. The CID is encrypted and stored on-chain.
+The upload service sends raw file bytes to IPFS. CID encryption is attempted only when a time-lock argument is supplied; the current upload component supplies no such argument, so it uses a plaintext CID. This is not confidential storage.
 
 ### Access Control
 
@@ -75,6 +81,8 @@ Files are encrypted and stored on IPFS. The CID is encrypted and stored on-chain
 5. **Lit Conditions**: Age-based or custom access conditions
 
 ## Getting Started
+
+Current blocker: `frontend/package.json` requests unavailable `lit-js-sdk@^3.1.0`, so the frontend setup below fails during dependency resolution. Selecting another SDK/version requires API compatibility validation; this audit does not silently substitute one.
 
 ### Prerequisites
 
@@ -130,7 +138,7 @@ cargo run --bin hash_file -- path/to/file.pdf
 
 1. Connect your Solana wallet (Phantom, Solflare)
 2. Drag and drop files or click to select
-3. Files are automatically:
+3. The intended flow is below, but it is not end-to-end verified; current upload behavior is described in the privacy warning above:
    - Hashed with SHA-256 + salt
    - Uploaded to IPFS
    - CID encrypted (Lit Protocol)
@@ -205,11 +213,10 @@ const transaction = await createShareFileInstruction(
 
 ## Security Considerations
 
-- **Salted Hashes**: Prevents rainbow table attacks
-- **Encrypted CIDs**: IPFS CIDs are encrypted before storage
-- **Access Control**: Multiple layers of access control (ZK, MPC, Lit)
-- **Time Locks**: Prevents premature access
-- **On-Chain Verification**: Hash commitments prevent tampering
+- **Salted hashes are not encryption**: they do not protect raw uploaded file contents.
+- **CID confidentiality is incomplete**: normal UI uploads use a plaintext CID.
+- **Access controls are incomplete**: ZK/MPC/Lit and time-lock scaffolding is not verified enforcement.
+- **On-chain verification is unverified here**: a hash commitment is an integrity mechanism, not an IPFS access gate.
 
 ## Roadmap
 
